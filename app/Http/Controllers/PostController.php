@@ -27,7 +27,7 @@ class PostController extends Controller
         }
 
         return response()->json([
-            'success' => false,
+            'success' => true,
             'message' => 'Successfully created new post',
         ]);
     }
