@@ -23,7 +23,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Route::get('/p/{uniqueName}', [PostController::class, 'getPost']);
     // Route::put('/p/{uniqueName}', [PostController::class, 'editPost']);
     Route::get('/post', [PostController::class, 'getAllPost']); //sementara, ntar juga dihapus
-    Route::post('/post', [PostController::class, 'buatPostBaru']);
+    Route::post('/p', [PostController::class, 'buatPostBaru']);
     Route::put('/p/{id}', [PostController::class, 'editPost']);
     Route::get('/{username}', [UserController::class, 'userProfile']);
 });
