@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Http\Requests\StorePostRequest;
+use App\Http\Requests\UpdatePostRequest;
+use App\Http\Traits\ApiResponseTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -14,11 +16,13 @@ use Illuminate\Support\Facades\Auth;
 class Post extends Model
 {
     use HasFactory;
+    use ApiResponseTrait;
     protected $table = 'posts';
+    protected $modelName = 'App\Models\Post';
     protected $fillable = [
         'user_id',
         'caption',
-        'likes'
+        'likes_count'
     ];
 
     public function user(): BelongsTo
@@ -50,7 +54,26 @@ class Post extends Model
         ]);
 
         $modelImage = new Image();
-        $image = $modelImage->uploadImage($request, $post->id);
+        $image = $modelImage->uploadImage($request, $post->id, $this->modelName);
         return $post;
+    }
+
+    public function editPost(UpdatePostRequest $request, Post $post)
+    {
+        $validated = $request->validated();
+        if ($request->hasFile('image')) {
+            $modelImage = new Image();
+            $image = $modelImage->updateImage($request, $post->id, $this->modelName);
+            if (!$image) {
+                return false;
+            }
+        }
+        $result = $post->update([
+            'caption' => $validated['caption']
+        ]);
+        if (!$result) {
+            return false;
+        }
+        return $result;
     }
 }

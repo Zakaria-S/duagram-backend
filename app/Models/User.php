@@ -3,7 +3,11 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Http\Resources\UserProfileResource;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -43,4 +47,24 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function profilePicture(): MorphOne
+    {
+        return $this->morphOne(Image::class, 'imageable');
+    }
+
+    public function following(): HasMany
+    {
+        return $this->hasMany(Following::class, 'follower_id', 'id');
+    }
+
+    public function followers(): HasMany
+    {
+        return $this->hasMany(Following::class, 'followed_id', 'id');
+    }
+
+    public function posts(): HasMany
+    {
+        return $this->hasMany(Post::class);
+    }
 }

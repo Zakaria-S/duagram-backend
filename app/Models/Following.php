@@ -11,6 +11,6 @@ class Following extends Model
     protected $table = 'followings';
     protected $fillable = [
         'follower_id',
-        'following_id'
+        'followed_id'
     ];
 }

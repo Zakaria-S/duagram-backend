@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users');
             $table->string('caption')->nullable();
-            $table->integer('likes')->default(0);
+            $table->integer('likes_count')->default(0);
             $table->timestamps();
         });
     }

@@ -17,12 +17,12 @@ class PostResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'poster_id' => $this->user->id,
-            'poster_name' => $this->user->name,
-            'poster_username' => $this->user->username,
-            'image_url' => Storage::url('posts/' . $this->image->name),
+            'user_id' => $this->user->id,
+            'name' => $this->user->name,
+            'username' => $this->user->username,
+            'image' => Storage::url('posts/' . $this->image->name),
             'caption' => $this->caption,
-            'likes' => $this->likes
+            'likes' => $this->likes_count
         ];
     }
 }
