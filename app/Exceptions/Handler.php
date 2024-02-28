@@ -25,7 +25,6 @@ class Handler extends ExceptionHandler
     protected $dontReport = [
         //
     ];
-
     /**
      * A list of the inputs that are never flashed for validation exceptions.
      *
@@ -46,6 +45,7 @@ class Handler extends ExceptionHandler
      *
      * @throws \Exception
      */
+
     public function report(Throwable $exception)
     {
         $ignoreable_exception_messages = ['Unauthenticated or Token Expired, Please Login'];
@@ -70,6 +70,7 @@ class Handler extends ExceptionHandler
      *
      * @throws \Throwable
      */
+
     public function render($request, Throwable $exception)
     {
 
@@ -96,11 +97,11 @@ class Handler extends ExceptionHandler
                     $exception
                 );
             }
+
             if ($exception instanceof ModelNotFoundException) {
-                return $this->respondNotFound(
-                    'Entry for ' . str_replace('App\\', '', $exception->getModel()) . ' not found'
-                );
+                return $this->respondNotFound('Record not found');
             }
+
             if ($exception instanceof ValidationException) {
 
                 return $this->respondValidationErrors($exception);

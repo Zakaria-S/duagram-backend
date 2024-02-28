@@ -53,6 +53,30 @@ class User extends Authenticatable
         return $this->morphOne(Image::class, 'imageable');
     }
 
+    public function follow(User $user)
+    {
+        if (!$this->isFollowing($user)) {
+            Following::create([
+                'follower_id' => auth()->id(),
+                'followed_id' => $user->id
+            ]);
+            return true;
+        }
+        return false;
+    }
+
+    public function unfollow(User $user)
+    {
+        if ($this->isFollowing($user)) {
+            Following::where('follower_id', auth()->id())->where('followed_id', $user->id)->delete();
+        }
+    }
+
+    public function isFollowing(User $user)
+    {
+        return $this->following()->where('followed_id', $user->id)->exists();
+    }
+
     public function following(): HasMany
     {
         return $this->hasMany(Following::class, 'follower_id', 'id');

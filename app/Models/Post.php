@@ -45,7 +45,7 @@ class Post extends Model
         return $this->morphOne(Image::class, 'imageable');
     }
 
-    public function buatPost(StorePostRequest $request)
+    public function createPost(StorePostRequest $request)
     {
         $validated = $request->validated();
         $post = Post::create([
@@ -71,6 +71,15 @@ class Post extends Model
         $result = $post->update([
             'caption' => $validated['caption']
         ]);
+        if (!$result) {
+            return false;
+        }
+        return $result;
+    }
+
+    public function deletePost(Post $post)
+    {
+        $result = $post->delete();
         if (!$result) {
             return false;
         }
